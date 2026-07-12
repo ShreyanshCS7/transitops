@@ -1,0 +1,6 @@
+node_modules/
+backend/data/transitops.db
+backend/data/transitops.db-shm
+backend/data/transitops.db-wal
+*.log
+.DS_Store
