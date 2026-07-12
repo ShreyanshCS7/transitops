@@ -53,7 +53,7 @@ function escapeHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-/* ===== CSV export ===== */
+// ======================== CSV Export=========================================
 function exportCsv(filename, rows) {
   if (!rows || !rows.length) { toast('Nothing to export', 'error'); return; }
   const cols = Object.keys(rows[0]);
@@ -67,7 +67,7 @@ function exportCsv(filename, rows) {
   URL.revokeObjectURL(url);
 }
 
-/* ===== Modal helper ===== */
+
 function openModal({ title, bodyHtml, footerHtml, onMount }) {
   closeModal();
   const backdrop = document.createElement('div');
