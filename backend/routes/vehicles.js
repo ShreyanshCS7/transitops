@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
   res.json(db.prepare(sql).all(...params));
 });
 
-// Vehicles eligible for dispatch selection (Available only; excludes In Shop / Retired / On Trip)
+
 router.get('/available', (req, res) => {
   res.json(db.prepare("SELECT * FROM vehicles WHERE status = 'Available' ORDER BY name").all());
 });
