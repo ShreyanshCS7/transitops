@@ -129,6 +129,7 @@ function showApp() {
   document.getElementById('user-role').textContent = state.user.role;
   document.getElementById('user-avatar').textContent = state.user.name.split(' ').map(w => w[0]).slice(0,2).join('');
   buildNav();
+  window.scrollTo(0, 0);
   navigateTo('dashboard');
 }
 
@@ -204,6 +205,7 @@ async function navigateTo(view) {
   const container = document.getElementById('view-container');
   container.innerHTML = '<div class="empty-state">Loading…</div>';
   tickClock();
+  window.scrollTo(0, 0);
   try {
     const renderer = { dashboard: renderDashboard, vehicles: renderVehicles, drivers: renderDrivers,
       trips: renderTrips, maintenance: renderMaintenance, fuel: renderFuel, reports: renderReports }[view];
