@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
   res.json(t);
 });
 
-// Create a Draft trip (selection validated but resources not yet locked)
+// ===================== Creating the Draft Trip =====================================================
 router.post('/', authorize('Driver', 'FleetManager'), (req, res) => {
   const { source, destination, vehicle_id, driver_id, cargo_weight, planned_distance } = req.body || {};
   if (!source || !destination || !vehicle_id || !driver_id || cargo_weight == null || planned_distance == null) {
@@ -60,7 +60,8 @@ router.post('/', authorize('Driver', 'FleetManager'), (req, res) => {
   res.status(201).json(db.prepare('SELECT * FROM trips WHERE id = ?').get(info.lastInsertRowid));
 });
 
-// Dispatch: Draft -> Dispatched. Locks vehicle & driver (status -> On Trip)
+// ============================ Draft => Dispatched ===========================================
+
 router.post('/:id/dispatch', authorize('Driver', 'FleetManager'), (req, res) => {
   const trip = db.prepare('SELECT * FROM trips WHERE id = ?').get(req.params.id);
   if (!trip) return res.status(404).json({ error: 'Trip not found' });
@@ -86,7 +87,7 @@ router.post('/:id/dispatch', authorize('Driver', 'FleetManager'), (req, res) => 
   res.json(db.prepare('SELECT * FROM trips WHERE id = ?').get(trip.id));
 });
 
-// Complete: Dispatched -> Completed. Requires final odometer + fuel consumed. Restores Available.
+// ===============================Dispatched Part===================================================
 router.post('/:id/complete', authorize('Driver', 'FleetManager'), (req, res) => {
   const trip = db.prepare('SELECT * FROM trips WHERE id = ?').get(req.params.id);
   if (!trip) return res.status(404).json({ error: 'Trip not found' });
@@ -116,7 +117,7 @@ router.post('/:id/complete', authorize('Driver', 'FleetManager'), (req, res) => 
   res.json(db.prepare('SELECT * FROM trips WHERE id = ?').get(trip.id));
 });
 
-// Cancel: Draft or Dispatched -> Cancelled. Restores vehicle/driver to Available if they were locked.
+//===============================Cancel Part:Delete or Draft Work==============================================================================
 router.post('/:id/cancel', authorize('Driver', 'FleetManager'), (req, res) => {
   const trip = db.prepare('SELECT * FROM trips WHERE id = ?').get(req.params.id);
   if (!trip) return res.status(404).json({ error: 'Trip not found' });
